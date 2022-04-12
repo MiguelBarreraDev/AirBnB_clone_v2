@@ -26,7 +26,15 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        pass
+        fetch_q = self.__session.query(cls).all()
+        if not cls:
+            return fetch_q
+
+        new_dict = {}
+        for key, value in fetch_q:
+            if value.to_dict()['__class__'] == cls.__name__:
+                new_dict[key] = value
+        return new_dict
 
     def new(self, obj):
         """Add the object to the current database session"""
