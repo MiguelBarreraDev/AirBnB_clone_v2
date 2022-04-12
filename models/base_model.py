@@ -5,7 +5,7 @@ from datetime import datetime
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime
 
 
 Base = declarative_base()
@@ -34,7 +34,7 @@ class BaseModel:
             del kwargs['__class__']
             self.__dict__.update(kwargs)
 
-    del delete(self):
+    def delete(self):
         from models import storage
         storage.delete(self)
 
