@@ -19,21 +19,21 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb)')
+            print('(hbnb) ', end='')
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -114,17 +114,27 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+        args = args.split(' ')
+        my_class = args[0]
+        if not my_class:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif my_class not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        params = args[1:]
+        obj = HBNBCommand.classes[my_class]()
+        for param in params:
+            [key, value] = param.split("=")
+            value = value.replace("_", " ")
+            value = value.replace("\"", "")
+            setattr(obj, key, value)
         storage.save()
-        print(new_instance.id)
+
+        """ Create an object of any class"""
         storage.save()
+        print(obj.id)
 
     def help_create(self):
         """ Help information for the create method """
