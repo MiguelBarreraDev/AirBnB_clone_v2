@@ -33,6 +33,7 @@ class FileStorage:
             json.dump(temp, f)
 
     def delete(self, obj=None):
+        """this method delete a obj from __obj"""
         if not obj:
             return
 
