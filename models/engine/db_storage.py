@@ -1,5 +1,6 @@
 """Module that define engine of storage in database"""
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, engine
+from sqlalchemy.orm.scoping import scoped_session
 from base_model import Base
 
 
@@ -44,4 +45,12 @@ class DBStorage:
 
     def reload(self):
         """Create all tables in the database and the current session"""
-        pass
+        from sqlalchemy.orm import sessionmaker
+        Base.metadata.create_all(self.__engine)
+        config_session = {
+            "bind": self.__engine,
+            "expire_on_commit": False,
+            "scoped_session": "thread-safe"
+        }
+        Session = sessionmaker(**config_session)
+        self.__session = Session()
