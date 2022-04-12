@@ -27,14 +27,21 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        fetch_q = self.__session.query(cls).all()
-        if not cls:
-            return fetch_q
-
+        obj_list = []
         new_dict = {}
-        for key, value in fetch_q:
-            if value.to_dict()['__class__'] == cls.__name__:
-                new_dict[key] = value
+        if not cls:
+            obj_list.extend(self.__session.query("State").all())
+            obj_list.extend(self.__session.query("City").all())
+            obj_list.extend(self.__session.query("Place").all())
+            obj_list.extend(self.__session.query("Review").all())
+            obj_list.extend(self.__session.query("User").all())
+            obj_list.extend(self.__session.query("Amenity").all())
+        else:
+            obj_list.extend(self.__session.query(cls).all())
+
+        for obj in obj_list:
+            new_dict[type(obj).__name__ + "." + obj.id] = obj
+
         return new_dict
 
     def new(self, obj):
