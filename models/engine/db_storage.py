@@ -36,12 +36,9 @@ class DBStorage:
         obj_list = []
         new_dict = {}
         if not cls:
-            obj_list.extend(self.__session.query(State).all())
-            obj_list.extend(self.__session.query(City).all())
-            # obj_list.extend(self.__session.query(Place).all())
-            # obj_list.extend(self.__session.query(Review).all())
-            # obj_list.extend(self.__session.query(User).all())
-            # obj_list.extend(self.__session.query(Amenity).all())
+            list_class = [State, City, Place, Review, User, Amenity]
+            for my_class in list_class:
+                obj_list.extend(self.__session.query(my_class).all())
         else:
             obj_list.extend(self.__session.query(cls).all())
 
