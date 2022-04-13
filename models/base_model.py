@@ -26,11 +26,12 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            for key, val in kwargs.items():
-                if key == "created_at" or key == "updated_at":
-                    val = datetime.strptime(kwargs['updated_at'], date)
-                setattr(self, key, val)
-
+            kwargs['created_at'] = datetime.strptime(
+                kwargs['created_at'], date
+            )
+            kwargs['updated_at'] = datetime.strptime(
+                kwargs['updated_at'], date
+            )
             del kwargs['__class__']
             self.__dict__.update(kwargs)
 
