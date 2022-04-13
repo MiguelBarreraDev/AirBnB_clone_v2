@@ -130,10 +130,11 @@ class HBNBCommand(cmd.Cmd):
             value = value.replace("_", " ")
             value = value.replace("\"", "")
             setattr(obj, key, value)
+        storage.new(obj)
         storage.save()
 
         """ Create an object of any class"""
-        storage.save()
+        # storage.save()
         print(obj.id)
 
     def help_create(self):
