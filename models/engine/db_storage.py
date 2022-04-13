@@ -1,6 +1,5 @@
 """Module that define engine of storage in database"""
-from sqlalchemy import create_engine, engine
-from sqlalchemy.orm.scoping import scoped_session
+from sqlalchemy import create_engine
 from models.base_model import Base
 from models.state import State
 from models.city import City
