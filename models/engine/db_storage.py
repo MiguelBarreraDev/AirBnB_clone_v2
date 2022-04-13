@@ -2,6 +2,12 @@
 from sqlalchemy import create_engine, engine
 from sqlalchemy.orm.scoping import scoped_session
 from models.base_model import Base
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.user import User
+from models.amenity import Amenity
 
 
 def connect(**kwrgs):
@@ -30,18 +36,17 @@ class DBStorage:
         obj_list = []
         new_dict = {}
         if not cls:
-            obj_list.extend(self.__session.query("State").all())
-            obj_list.extend(self.__session.query("City").all())
-            obj_list.extend(self.__session.query("Place").all())
-            obj_list.extend(self.__session.query("Review").all())
-            obj_list.extend(self.__session.query("User").all())
-            obj_list.extend(self.__session.query("Amenity").all())
+            obj_list.extend(self.__session.query(State).all())
+            obj_list.extend(self.__session.query(City).all())
+            # obj_list.extend(self.__session.query(Place).all())
+            # obj_list.extend(self.__session.query(Review).all())
+            # obj_list.extend(self.__session.query(User).all())
+            # obj_list.extend(self.__session.query(Amenity).all())
         else:
             obj_list.extend(self.__session.query(cls).all())
 
         for obj in obj_list:
             new_dict[type(obj).__name__ + "." + obj.id] = obj
-
         return new_dict
 
     def new(self, obj):
