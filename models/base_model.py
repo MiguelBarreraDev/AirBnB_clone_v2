@@ -26,13 +26,23 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            kwargs['created_at'] = datetime.strptime(
-                kwargs['created_at'], date
-            )
-            kwargs['updated_at'] = datetime.strptime(
-                kwargs['updated_at'], date
-            )
-            del kwargs['__class__']
+            if "id" not in kwargs:
+                kwargs['id'] = str(uuid.uuid4())
+            if "created_at" in kwargs:
+                kwargs['created_at'] = datetime.strptime(
+                    kwargs['created_at'], date
+                )
+            else:
+                kwargs['created_at'] = datetime.now()
+
+            if "updated_at" in kwargs:
+                kwargs['updated_at'] = datetime.strptime(
+                    kwargs['updated_at'], date
+                )
+            else:
+                kwargs['updated_at'] = datetime.now()
+            if "__class__" in kwargs:
+                del kwargs['__class__']
             self.__dict__.update(kwargs)
 
     def delete(self):
