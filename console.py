@@ -114,6 +114,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
+        """ Create an object of any class"""
         args = args.split(' ')
         my_class = args[0]
         if not my_class:
@@ -132,9 +133,6 @@ class HBNBCommand(cmd.Cmd):
             setattr(obj, key, value)
         storage.new(obj)
         storage.save()
-
-        """ Create an object of any class"""
-        # storage.save()
         print(obj.id)
 
     def help_create(self):
@@ -210,8 +208,17 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        for k, v in storage.all().items():
-            print(str(v))
+        print_list = []
+        if not args:
+            for v in storage.all().values():
+                print_list.append(str(v))
+        else:
+            if args not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            for v in storage.all(HBNBCommand.classes[args]).values():
+                print_list.append(str(v))
+        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
@@ -221,7 +228,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k in storage.all().keys():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
