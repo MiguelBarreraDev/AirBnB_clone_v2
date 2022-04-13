@@ -1,7 +1,7 @@
 """Module that define engine of storage in database"""
 from sqlalchemy import create_engine, engine
 from sqlalchemy.orm.scoping import scoped_session
-from base_model import Base
+from models.base_model import Base
 
 
 def connect(**kwrgs):
@@ -65,7 +65,6 @@ class DBStorage:
         config_session = {
             "bind": self.__engine,
             "expire_on_commit": False,
-            "scoped_session": "thread-safe"
         }
         Session = sessionmaker(**config_session)
         self.__session = Session()
