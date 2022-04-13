@@ -57,3 +57,16 @@ class Place(BaseModel, Base):
                 lambda rw: rw.place_id == self.id,
                 storage.all(Review).values()
             )]
+
+        @property
+        def amenities(self):
+            """ returns the list of Review instances with place_id equals
+            to the current Amenity.id """
+            from models.amenity import Amenity
+            from models.__init__ import storage
+            dict_amenity = storage.all(Amenity)
+            store = list()
+            for key, value in dict_amenity.items():
+                if value.place_id == self.id:
+                    store.append(value)
+            return store
