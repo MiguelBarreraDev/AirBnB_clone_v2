@@ -9,7 +9,7 @@ sudo apt-get -y install nginx
 sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
 ## Adding fake content in the index.html file
-sudo echo "
+echo "
 html>
   <head>
   </head>
@@ -17,7 +17,7 @@ html>
     <h1>Holberton School</h1>
   </body>
 </html>
-" > /data/web_static/releases/test/index.html
+" | sudo tee /data/web_static/releases/test/index.html
 ## Create symbolic link
 sudo ln -fs /data/web_static/releases/test /data/web_static/current
 ## Modify owner and group of the data directory
