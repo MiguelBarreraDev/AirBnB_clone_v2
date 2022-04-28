@@ -4,6 +4,7 @@ sudo apt update
 sudo apt -y upgrade
 
 sudo apt install -y nginx
+
 #flag -p es para hacerlo recursivo y cofirmar si existe
 sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
