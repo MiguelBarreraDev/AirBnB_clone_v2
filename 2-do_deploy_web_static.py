@@ -37,7 +37,7 @@ def do_deploy(archive_path):
     """
     Function definition that distributes an archive to your web servers
     """
-    if exists(archive_path) if False:
+    if exists(archive_path) is False:
         return False
 
     try:
