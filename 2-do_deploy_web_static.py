@@ -56,6 +56,7 @@ def do_deploy(archive_path):
         run("sudo rm /tmp/{}".format(filename))
         run("sudo mv {}/web_static/* {}".format(directory, directory))
         run("sudo rm -rf {}/web_static".format(directory))
+        run("sudo rm -rf /data/web_static/current")
         # Create new symbolic link
         run("sudo ln -fs {} /data/web_static/current".format(directory))
         # ===== Return value =====
