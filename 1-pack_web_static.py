@@ -16,9 +16,9 @@ def do_pack():
     """
     try:
         local("mkdir -p ./versions/")
-        fdate = "%Y%m%d%H%M%S"
-        dest = "web_static_{}.tgz".format(datetime.now().strftime(fdate))
-        local("tar -cvf ./versions/{} ./web_static".format(dest))
+        date = datetime.now().strftime("%Y%m%d%H%M%S")
+        dest = "./versions/web_static_{}.tgz".format(date)
+        local("tar -cvf {} ./web_static".format(dest))
         return dest
     except Exception:
         return None
