@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-from fabric.api import local
-from datetime import datetime
 """
 This module provides a function to generate .tgz file
 
@@ -8,6 +6,8 @@ Functions
 ---------
     do_pack
 """
+from datetime import datetime
+from fabric.api import local
 
 
 def do_pack():
