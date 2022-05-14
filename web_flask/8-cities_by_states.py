@@ -1,24 +1,24 @@
 #!/usr/bin/python3
-"""Write a script that starts a Flask web application"""
-from flask import Flask, render_template
-from models.__init__ import storage
+"""This script starts a Flask web application"""
+from flask import Flask, escape, render_template
+from models import storage
 from models.state import State
-
 app = Flask(__name__)
 
 
+@app.route('/cities_by_states', strict_slashes=False)
+def cities_by_states():
+    """Returns a rendered html template at the /8-cities_by_states route,
+    listing all cities"""
+    return render_template('8-cities_by_states.html',
+                           states=storage.all('State').values())
+
+
 @app.teardown_appcontext
-def appcontext(self):
-    """Remove the current SQLAlchemy Session"""
+def teardown(self):
+    """Removes the current SQLAlchemy Session"""
     storage.close()
 
 
-@app.route("/cities_by_states", strict_slashes=False)
-def display_page():
-    """ Display html page """
-    all_states = storage.all(State).values()
-    return render_template("8-cities_by_states.html", states=all_states)
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5000)
