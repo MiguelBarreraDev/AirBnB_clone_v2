@@ -1,101 +1,138 @@
 .filters {
-	display: block;
-	background-color: white;
+	display: flex;
+	background-color: #FFFFFF;
 	height: 70px;
 	width: 100%;
-	border: 1px solid #DDDDDD;
+	border-top: 1px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
 	border-radius: 4px;
+	align-items: center;
+	justify-content: space-between;
+}
+@media only screen and (min-width: 1011px) {
+	.filters {
+		border: 1px solid #DDDDDD;
+	}
+}
+/*====================================================*/
+/* Styles for the button("search") of filter elements */
+/*====================================================*/
+.filters > button {
+	font-size: 18px;
+	background-color: #FF5A5F;
+	color: #000000;
+	height: 48px;
+	max-width: 224.25px;
+	width: 100%;
+	border: 0;
+	border-radius: 4px;
+	margin-right: 2.5%;
+	padding: 0;
+	cursor: pointer;
+	flex: .5;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+/*
+.filters > button::after {
+	content: "Search";
+}
+*/
+.filters > button:hover {
+	opacity: 90%;
+}
+.filters > button > .icon_search {
+	height: 25px;
+	width: 25px;
+	margin: 2px;
+}
+@media only screen and (max-width: 520px) {
+	.filters > button {
+		flex: none;
+		width: 48px;
+		border-radius: 50%;
+		font-size: 0;
+	}
+	.filters > button::after {
+		content: "";
+	}
+}
+/*=================================*/
+/* Styles for the filters elements */
+/*=================================*/
+.filters .filters_main {
+	display: flex;
+	flex: .5;
+	height: 100%;
 }
 
-.locations {
-	display: inline;
-	vertical-align: middle;
-	float: left;
-	height: 100%;
-	width: 25%;
+.filters .filters_main > .filters_item {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	justify-content: center;
+	padding-left: 6%;
+	flex: 1;
+}
 
-	line-height: 20px;
+.filters .filters_main > .filters_item:first-child {
 	border-right: 1px solid #DDDDDD;
 }
 
-.filter_amenities {
-	display: inline;
-	vertical-align: middle;
-	height: 100%;
-	float: left;
-    width: 25%;
-
-	line-height: 20px;
+.filters .filters_main h3,
+.filters .filters_main h4 {
+	margin: 0;
 }
 
-.popover {
-	list-style-type: none;
-	display: none;
+.filters .filters_main h3 {
+	font-weight: 600;
+}
+
+.filters .filters_main h4 {
+	font-weight: 400;
+	font-size: 14px;
+}
+@media only screen and (max-width: 648px) {
+	.filters .filters_main {
+		flex: 1;
+	}
+}
+/*=========================================*/
+/* Styles for the list of each filter type */
+/*=========================================*/
+.filters_item .popover {
 	background-color: #FAFAFA;
-	width: 100%;
-
-	margin-left: -1px;
-	margin-top: 8px;
-	padding: 25px 0px;
-
 	border: 1px solid #DDDDDD;
 	border-radius: 4px;
 }
-
-.locations:hover .popover {
-	display: inline-block;
+.filters_item .popover h2 {
+	margin: 0;
+	font-size: 16px;
 }
-
-.filter_amenities:hover .popover {
-	display: inline-block;
+.filters_item .popover > li {
+	padding-top: 20px;
 }
-
-ul {
-	list-style-type: none;
-	padding: 0px;
+.filters_item .popover > li > ul {
+	padding: 0;
+	padding-left: 15px;
+}
+.filters_item .popover > li:last-child {
 	padding-bottom: 20px;
 }
 
-li {
-}	
-
-h2 {
-	font-size: 16px;
-	padding-left: 30px;
-	margin: 0px;
+.filters .filters_item .popover {
+	display: none;
+	position: absolute;
+	box-sizing: border-box;
+	top: 100%;
+	left: 0px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	padding-left: 15px;
 }
-
-h3 {
-	font-weight: 600;
-	margin-top: 12px;
-	margin-bottom: 5px;	
-	padding-left: 45px;
-}
-
-h4 {
-	font-size: 14px;
-	font-weight: 400;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	padding-left: 45px;
-}
-
-button {
-	color: #FFFFFF;
-	font-size: 18px;
-	
-	height: 48px;
-	width: 20%;
-	background-color: #FF5A5F;
-	border-style: none;
-	border-radius: 4px;
-
-	float: right;
-	margin-top: 11px;
-	margin-bottom: 11px;
-	margin-right: 30px;
-}
-
-button:hover {
-	opacity: 90%;
+/* Show on hover */
+.filters .filters_item:hover > ul.popover {
+	display: block;
 }

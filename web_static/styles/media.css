@@ -1,0 +1,61 @@
+.body {
+	padding-top: 71px; 
+}
+.header {
+	background-color: #fff;
+	position: fixed;
+	top: 0;
+}
+@media only screen and (max-width: 999px) {
+	.header {
+		border: 0;
+		background-color: #000000;
+		z-index: 100;
+		backdrop-filter: blur(10px);
+	}
+	.body {
+		background-color: #000;
+	}
+	.container .filters {
+		position: sticky;
+		z-index: 120;
+		top: 0;
+	}
+	.container .filters > button {
+		background-color: #FF385C;
+	}
+	.container .places_item {
+		background-color: #FF385C;
+		color: #fff;
+	}
+	.places_item .price_by_night {
+		color: #fff;
+		border: 1px solid #fff;
+	}
+}
+@media only screen and (min-width: 1000px) {
+	.container .filters {
+		border-radius: 34px;
+	}
+}
+@media only screen and (max-width: 400px) {
+	.filters .hidden {
+		display: none;
+	}
+	.filters-sticky {
+		
+	}
+	.filters .filters_main {
+		display: none;
+
+	}
+	.container .filters {
+		background-color: transparent;
+		border: 0;
+		justify-content: center;
+	}
+	.container .bg-flex {
+		background-color: transparent;
+		justify-content: flex-end;
+	}
+}
