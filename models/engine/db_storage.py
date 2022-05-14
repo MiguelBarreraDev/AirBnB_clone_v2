@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Module that define engine of storage in database"""
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from models.base_model import Base
 from models.state import State
 from models.city import City
@@ -8,9 +9,10 @@ from models.place import Place
 from models.review import Review
 from models.user import User
 from models.amenity import Amenity
+from os import getenv
 
 
-def connect(**kwrgs):
+def connect():
     """Make link to the MySQL"""
     import models
     config = models.config
@@ -28,10 +30,8 @@ class DBStorage:
 
     def __init__(self):
         """Class constructor"""
-        import models
-        config = models.config
         self.__engine = connect()
-        if config["env"] == "test":
+        if getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -64,14 +64,12 @@ class DBStorage:
 
     def reload(self):
         """Create all tables in the database and the current session"""
-        from sqlalchemy.orm import sessionmaker, scoped_session
         Base.metadata.create_all(self.__engine)
         config_session = {
             "bind": self.__engine,
             "expire_on_commit": False,
         }
-        session_factory = sessionmaker(**config_session)
-        Session = scoped_session(session_factory)
+        Session = sessionmaker(**config_session)
         self.__session = Session()
 
     def close(self):
