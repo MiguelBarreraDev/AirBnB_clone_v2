@@ -43,8 +43,11 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
+        new_dict = self.__dict__.copy()
+        if "_sa_instance_state" in new_dict:
+            del new_dict["_sa_instance_state"]
         data = "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
+            type(self).__name__, self.id, new_dict)
         return data
 
     def save(self):
