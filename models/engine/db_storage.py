@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """Module that define engine of storage in database"""
 from sqlalchemy import create_engine
 from models.base_model import Base
@@ -11,7 +12,8 @@ from models.amenity import Amenity
 
 def connect(**kwrgs):
     """Make link to the MySQL"""
-    from models.__init__ import config
+    import models
+    config = models.config
     url = "mysql+mysqldb://{}:{}@{}/{}".format(
         config["user"], config["passwd"], config["host"], config["db"]
     )
@@ -26,7 +28,8 @@ class DBStorage:
 
     def __init__(self):
         """Class constructor"""
-        from models.__init__ import config
+        import models
+        config = models.config
         self.__engine = connect()
         if config["env"] == "test":
             Base.metadata.drop_all(self.__engine)
@@ -61,11 +64,15 @@ class DBStorage:
 
     def reload(self):
         """Create all tables in the database and the current session"""
-        from sqlalchemy.orm import sessionmaker
+        from sqlalchemy.orm import sessionmaker, scoped_session
         Base.metadata.create_all(self.__engine)
         config_session = {
             "bind": self.__engine,
             "expire_on_commit": False,
         }
         Session = sessionmaker(**config_session)
-        self.__session = Session()
+        self.__session = scoped_session(Session)
+
+    def close(self):
+        """Remove Session"""
+        self.__session.remove()

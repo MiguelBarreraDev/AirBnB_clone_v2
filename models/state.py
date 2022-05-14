@@ -19,8 +19,8 @@ class State(BaseModel, Base):
             """Return a list of cities by state"""
             from models.__init__ import storage
             from models.city import City
-            list_cities = [filter(
+            list_cities = list(filter(
                 lambda c: c.state_id == self.id,
                 storage.all(City).values()
-            )]
+            ))
             return list_cities
