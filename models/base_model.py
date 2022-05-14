@@ -28,17 +28,17 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            for k, v in kwargs.items():
-                if k == "created_at" or k == "updated_at":
-                    v = datetime.strptime(v, date)
-                if k != "__class__" and k != "_sa_instance_state":
-                    setattr(self, k, v)
             if "id" not in kwargs:
                 self.id = str(uuid.uuid4())
             if "created_at" not in kwargs:
                 self.created_at = datetime.now()
             if "updated_at" not in kwargs:
                 self.updated_at = datetime.now()
+            if "__class__" in kwargs:
+                del kwargs["__class__"]
+            for key, value in kwargs.items():
+                self.key = value
+            self.__dict__.update(kwargs)
 
     def delete(self):
         from models import storage
@@ -46,12 +46,8 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        new_dict = self.__dict__.copy()
-        if "_sa_instance_state" in new_dict:
-            del new_dict["_sa_instance_state"]
-        data = "[{}] ({}) {}".format(
-            type(self).__name__, self.id, new_dict)
-        return data
+        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
+        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -64,7 +60,8 @@ class BaseModel:
         """Convert instance into dict format"""
         dictionary = {}
         dictionary.update(self.__dict__)
-        dictionary.update({'__class__': type(self).__name__})
+        dictionary.update({'__class__':
+                          (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         if "_sa_instance_state" in dictionary:
