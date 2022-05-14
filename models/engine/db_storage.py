@@ -70,8 +70,9 @@ class DBStorage:
             "bind": self.__engine,
             "expire_on_commit": False,
         }
-        Session = sessionmaker(**config_session)
-        self.__session = scoped_session(Session)
+        session_factory = sessionmaker(**config_session)
+        Session = scoped_session(session_factory)
+        self.__session = Session()
 
     def close(self):
         """Remove Session"""
