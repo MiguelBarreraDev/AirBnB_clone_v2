@@ -86,11 +86,17 @@ def do_clean(number=0):
     """
     number = int(number)
 
+    if number not in [0, 1, 2]:
+        return None
+
     if number == 0:
         number = 2
     else:
         number += 1
 
-    local('cd versions ; ls -t | tail -n +{} | xargs rm -rf'.format(number))
+    local("cd versions ; ls -t | tail -n +{} | xargs rm -rf".format(number))
     path = '/data/web_static/releases'
-    run('cd {} ; ls -t | tail -n +{} | xargs rm -rf'.format(path, number))
+    run(
+        "cd {} ;sudo ls -t | sudo tail -n +{} | sudo xargs rm -rf"
+        .format(path, number)
+    )
