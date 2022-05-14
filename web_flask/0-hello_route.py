@@ -5,7 +5,7 @@ from flask import Flask
 app = Flask(__name__)
 
 
-@app.route("/home", strict_slashes=False)
+@app.route("/", strict_slashes=False)
 def home():
     """Definition of the view function for home ruler"""
     return "Hello HBNB!"
