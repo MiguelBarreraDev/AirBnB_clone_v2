@@ -1,0 +1,38 @@
+.body {
+	margin: 0;
+	padding: 0;
+	color: #484848;
+	font-size: 14px;
+	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	position: relative;
+	min-height: 100vh;
+	overflow-x: hidden;
+}
+
+.container {
+	max-width: 1000px;
+	margin: 30px auto 0;
+	padding-bottom: 60px;
+	position: relative;
+}
+
+ul {
+	list-style: none;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.left {
+	text-align: left;
+}
+
+.bg-icon {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	width: 25px;
+	height: 25px;
+}
+
