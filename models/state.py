@@ -12,15 +12,16 @@ class State(BaseModel, Base):
 
     if getenv('HBNB_TYPE_STORAGE') == "db":
         name = Column(String(128), nullable=False)
-        cities = relationship("City", backref="cities", cascade="all, delete")
+        cities = relationship("City", backref="state", cascade="all, delete")
     else:
         @property
         def cities(self):
             """Return a list of cities by state"""
-            from models.__init__ import storage
+            import models
             from models.city import City
-            list_cities = list(filter(
-                lambda c: c.state_id == self.id,
-                storage.all(City).values()
-            ))
-            return list_cities
+            dict_city = models.storage.all(City)
+            store = []
+            for city in dict_city.values():
+                if city.state_id == self.id:
+                    store.append(city)
+            return store

@@ -11,16 +11,8 @@ from models.user import User
 from models.amenity import Amenity
 from os import getenv
 
-
-def connect():
-    """Make link to the MySQL"""
-    import models
-    config = models.config
-    url = "mysql+mysqldb://{}:{}@{}/{}".format(
-        config["user"], config["passwd"], config["host"], config["db"]
-    )
-    engine = create_engine(url, pool_pre_ping=True)
-    return engine
+classes = {"Amenity": Amenity, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class DBStorage:
@@ -30,23 +22,25 @@ class DBStorage:
 
     def __init__(self):
         """Class constructor"""
-        self.__engine = connect()
+        self.__engine = create_engine(
+            "mysql+mysqldb://{}:{}@{}/{}"
+            .format(getenv('HBNB_MYSQL_USER'),
+                    getenv('HBNB_MYSQL_PWD'),
+                    getenv('HBNB_MYSQL_HOST'),
+                    getenv('HBNB_MYSQL_DB')),
+            pool_pre_ping=True)
         if getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        obj_list = []
         new_dict = {}
-        if not cls:
-            list_class = [State, City, Place, Review, User, Amenity]
-            for my_class in list_class:
-                obj_list.extend(self.__session.query(my_class).all())
-        else:
-            obj_list.extend(self.__session.query(cls).all())
-
-        for obj in obj_list:
-            new_dict[type(obj).__name__ + "." + obj.id] = obj
-        return new_dict
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                objs = self.__session.query(classes[clss]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return (new_dict)
 
     def new(self, obj):
         """Add the object to the current database session"""
@@ -65,11 +59,8 @@ class DBStorage:
     def reload(self):
         """Create all tables in the database and the current session"""
         Base.metadata.create_all(self.__engine)
-        config_session = {
-            "bind": self.__engine,
-            "expire_on_commit": False,
-        }
-        Session = sessionmaker(**config_session)
+        Session = sessionmaker()
+        Session.configure(bind=self.__engine, expire_on_commit=False)
         self.__session = Session()
 
     def close(self):
