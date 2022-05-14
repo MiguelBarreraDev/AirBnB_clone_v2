@@ -1,4 +1,4 @@
-#!usr/bin/python3
+#!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
@@ -13,4 +13,4 @@ class Amenity(BaseModel, Base):
         place_amenities = relationship('Place', secondary='place_amenity',
                                        back_populates='amenities')
     else:
-        name = ""/
+        name = ""
