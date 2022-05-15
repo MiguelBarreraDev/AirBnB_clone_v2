@@ -1,6 +1,19 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+
+classes = {
+    'BaseModel': BaseModel, 'User': User, 'Place': Place,
+    'State': State, 'City': City, 'Amenity': Amenity,
+    'Review': Review
+}
 
 
 class FileStorage:
@@ -15,7 +28,7 @@ class FileStorage:
 
         new_dict = {}
         for key, value in FileStorage.__objects.items():
-            if value.to_dict()['__class__'] == cls.__name__:
+            if value.__class__ == cls:
                 new_dict[key] = value
         return new_dict
 
@@ -36,24 +49,10 @@ class FileStorage:
         """this method delete a obj from __obj"""
         if not obj:
             return
-
         del FileStorage.__objects[obj.to_dict()['__class__'] + '.' + obj.id]
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
-        classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
