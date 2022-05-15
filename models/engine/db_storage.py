@@ -114,3 +114,7 @@ class DBStorage:
         config_session = {"bind": self.__engine, "expire_on_commit": False}
         Session = sessionmaker(**config_session)
         self.__session = Session()
+
+    def close(self):
+        """Update session"""
+        self.__session.close()
