@@ -25,7 +25,7 @@ def get_objects_by_id(CLS, id=None):
     dict_objects = storage.all(CLS)
     store = list()
     for value in dict_objects.values():
-        if value.place_id == id:
+        if value.state_id == id:
             store.append(value)
     return store
 
