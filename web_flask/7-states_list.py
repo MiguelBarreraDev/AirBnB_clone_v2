@@ -11,7 +11,7 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.route("/states_list")
+@app.route("/states_list", strict_slashes=False)
 def index():
     """
     View function for /states_list that return a template
