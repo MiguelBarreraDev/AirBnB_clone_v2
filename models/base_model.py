@@ -5,7 +5,6 @@ import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
-from models import storage
 
 
 if getenv("HBNB_TYPE_STORAGE"):
@@ -51,6 +50,7 @@ class BaseModel:
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
+        from models import storage
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
@@ -69,4 +69,5 @@ class BaseModel:
 
     def delete(self):
         """ Delete object from __object class attribute """
+        from models import storage
         storage.delete(self)

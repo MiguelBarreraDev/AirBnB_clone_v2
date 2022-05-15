@@ -4,7 +4,6 @@ from os import getenv
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
-from models import storage
 from models.city import City
 
 
@@ -22,6 +21,7 @@ def get_objects_by_id(CLS, id=None):
     ------
         store: List of records
     """
+    from models import storage
     dict_objects = storage.all(CLS)
     store = list()
     for value in dict_objects.values():
