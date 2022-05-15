@@ -75,4 +75,4 @@ class BaseModel:
     def delete(self):
         """ Delete object from __object class attribute """
         from models import storage
-        storage.delete()
+        storage.delete(self)
