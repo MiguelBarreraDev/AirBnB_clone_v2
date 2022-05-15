@@ -49,7 +49,7 @@ def number_view(n):
     View function for the dinamyc rule '/number/<int:n>' that
     return a message with the n value
     """
-    return ("{} is a nnumber".format(n))
+    return "{} is a number".format(n)
 
 
 if __name__ == "__main__":
