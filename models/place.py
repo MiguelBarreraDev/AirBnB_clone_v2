@@ -1,20 +1,56 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from os import getenv
-from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
+from models.base_model import BaseModel, Base
+from models.review import Review
+from models.amenity import Amenity
+from models import storage
 
-place_amenity = Table(
-    'place_amenity',
-    Base.metadata,
-    Column('place_id', ForeignKey('places.id'), nullable=False),
-    Column('amenity_id', ForeignKey('amenities.id'), nullable=False)
-)
+# Define tabla only if we are running the program with
+# a database engine
+if getenv("HBNB_TYPE_STORAGE") == "db":
+    place_amenity = Table(
+        'place_amenity',
+        Base.metadata,
+        Column(
+            'place_id', String(60),
+            ForeignKey('places.id'), nullable=False
+        ),
+        Column(
+            'amenity_id', String(60),
+            ForeignKey('amenities.id'), nullable=False
+        )
+    )
+
+
+def get_objects_by_id(CLS, id=None):
+    """
+    Get records of a specific class that match the id passed
+    as argument
+
+    Parameters
+    ----------
+        CLS: Specific class
+        id: Value to indetify objects
+
+    Return
+    ------
+        store: List of records
+    """
+    dict_objects = storage.all(CLS)
+    store = list()
+    for value in dict_objects.values():
+        if value.place_id == id:
+            store.append(value)
+    return store
 
 
 class Place(BaseModel, Base):
-    """ A place to stay """
+    """
+    Model of the Place table in the database
+    """
     __tablename__ = 'places'
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
@@ -27,13 +63,10 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
-        amenity_ids = []
-        reviews = relationship(
-            'Review', backref='place', cascade='delete'
-        )
+        reviews = relationship('Review', backref='place')
         amenities = relationship(
-            "Amenity", secondary=place_amenity, viewonly=False,
-            back_populates="place_amenities"
+            "Amenity", secondary="place_amenity",
+            viewonly=False, back_populates="place_amenities"
         )
     else:
         city_id = ""
@@ -50,23 +83,14 @@ class Place(BaseModel, Base):
 
         @property
         def reviews(self):
-            """Return the list of the reviews of a place"""
-            from models.review import Review
-            from models.__init__ import storage
-            return [filter(
-                lambda rw: rw.place_id == self.id,
-                storage.all(Review).values()
-            )]
+            """
+            Return all reviews instances associated with a place
+            """
+            return get_objects_by_id(Review, self.id)
 
         @property
         def amenities(self):
-            """ returns the list of Review instances with place_id equals
-            to the current Amenity.id """
-            from models.amenity import Amenity
-            from models.__init__ import storage
-            dict_amenity = storage.all(Amenity)
-            store = list()
-            for key, value in dict_amenity.items():
-                if value.place_id == self.id:
-                    store.append(value)
-            return store
+            """
+            Return the list of amenity instances associated with a place
+            """
+            return get_objects_by_id(Amenity, self.id)
