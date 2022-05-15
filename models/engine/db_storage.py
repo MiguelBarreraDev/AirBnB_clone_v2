@@ -1,5 +1,6 @@
 """Module that define engine of storage in database"""
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from models.base_model import Base
 from models.state import State
 from models.city import City
@@ -7,13 +8,19 @@ from models.place import Place
 from models.review import Review
 from models.user import User
 from models.amenity import Amenity
+from models import config
 
 
-def connect(**kwrgs):
+classes = [State, City, Place, Review, User, Amenity]
+
+
+def get_engine():
     """Make link to the MySQL"""
-    from models.__init__ import config
     url = "mysql+mysqldb://{}:{}@{}/{}".format(
-        config["user"], config["passwd"], config["host"], config["db"]
+        config["user"],
+        config["passwd"],
+        config["host"],
+        config["db"]
     )
     engine = create_engine(url, pool_pre_ping=True)
     return engine
@@ -26,23 +33,23 @@ class DBStorage:
 
     def __init__(self):
         """Class constructor"""
-        from models.__init__ import config
-        self.__engine = connect()
+        self.__engine = get_engine()
         if config["env"] == "test":
-            Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all(self.__engine)  # Delete all tables
 
     def all(self, cls=None):
-        obj_list = []
+        """Return stored objects in the database"""
+        logs = []
         new_dict = {}
         if not cls:
-            list_class = [State, City, Place, Review, User, Amenity]
-            for my_class in list_class:
-                obj_list.extend(self.__session.query(my_class).all())
+            for classname in classes:
+                logs.extend(self.__session.query(classname).all())
         else:
-            obj_list.extend(self.__session.query(cls).all())
+            logs.extend(self.__session.query(cls).all())
 
-        for obj in obj_list:
-            new_dict[type(obj).__name__ + "." + obj.id] = obj
+        for obj in logs:
+            key = obj.__class__.__name__ + "." + obj.id
+            new_dict[key] = obj
         return new_dict
 
     def new(self, obj):
@@ -61,11 +68,7 @@ class DBStorage:
 
     def reload(self):
         """Create all tables in the database and the current session"""
-        from sqlalchemy.orm import sessionmaker
         Base.metadata.create_all(self.__engine)
-        config_session = {
-            "bind": self.__engine,
-            "expire_on_commit": False,
-        }
+        config_session = {"bind": self.__engine, "expire_on_commit": False}
         Session = sessionmaker(**config_session)
         self.__session = Session()
