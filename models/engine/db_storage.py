@@ -69,3 +69,6 @@ class DBStorage:
         }
         Session = sessionmaker(**config_session)
         self.__session = Session()
+
+    def close():
+        self.__session.close()

@@ -16,7 +16,7 @@ def index():
     """
     View function for /states_list that return a template
     """
-    states = storage.all("State").values()
+    states = storage.all(State).values()
     return render_template("7-states_list.html", data=states)
 
 
