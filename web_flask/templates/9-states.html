@@ -15,11 +15,9 @@
 		<h1>State: {{ data.content.name }}</h1>
 		<h3>Cities:</h3>
 		<ul>
-			<ul>
-				{% for city in data.content.cities | sort(attribute="name") %}
-				<li>{{city.id}}: <b>{{city.name}}</b></li>
-				{% endfor %}
-			</ul>
+			{% for city in data.content.cities | sort(attribute="name") %}
+			<li>{{city.id}}: <b>{{city.name}}</b></li>
+			{% endfor %}
 		</ul>
 		{% else %}
 		<h1>Not found!</h1>
