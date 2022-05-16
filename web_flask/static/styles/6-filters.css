@@ -1,0 +1,103 @@
+.filters {
+	display: flex;
+	background-color: #FFFFFF;
+	height: 70px;
+	width: 100%;
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+	align-items: center;
+	justify-content: space-between;
+}
+/*====================================================*/
+/* Styles for the button("search") of filter elements */
+/*====================================================*/
+.filters > button {
+	font-size: 18px;
+	background-color: #FF5A5F;
+	color: #FFFFFF;
+	height: 48px;
+	border: 0;
+	border-radius: 4px;
+	margin-right: 2.5%;
+	padding: 0;
+	cursor: pointer;
+	flex: .23;
+}
+
+.filters > button:hover {
+	opacity: 90%;
+}
+/*=================================*/
+/* Styles for the filters elements */
+/*=================================*/
+.filters .filters_main {
+	display: flex;
+	flex: .5;
+	height: 100%;
+}
+
+.filters .filters_main > .filters_item {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	justify-content: center;
+	padding-left: 6%;
+	flex: 1;
+}
+
+.filters .filters_main > .filters_item:first-child {
+	border-right: 1px solid #DDDDDD;
+}
+
+.filters .filters_main h3,
+.filters .filters_main h4 {
+	margin: 0;
+}
+
+.filters .filters_main h3 {
+	font-weight: 600;
+}
+
+.filters .filters_main h4 {
+	font-weight: 400;
+	font-size: 14px;
+}
+/*=========================================*/
+/* Styles for the list of each filter type */
+/*=========================================*/
+.filters_item .popover {
+	overflow-y: auto;
+	max-height: 300px;
+	background-color: #FAFAFA;
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+}
+
+.filters_item .popover h2 {
+	margin: 0;
+	font-size: 16px;
+}
+
+.filters_item .popover > li {
+	padding-top: 20px;
+}
+
+.filters_item .popover > li:last-child {
+	padding-bottom: 20px;
+}
+
+.filters .filters_item .popover {
+	display: none;
+	position: absolute;
+	box-sizing: border-box;
+	top: 100%;
+	left: 0px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	padding-left: 15px;
+}
+/* Show on hover */
+.filters .filters_item:hover > ul.popover {
+	display: block;
+}
