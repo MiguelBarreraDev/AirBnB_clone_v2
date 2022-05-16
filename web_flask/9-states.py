@@ -22,7 +22,6 @@ def display_page(_id=None):
     key = None
     if _id:
         key = "State" + "." + str(_id)
-        print(key)
         if key in dict_states.keys():
             found = 1
     data = {
@@ -34,4 +33,4 @@ def display_page(_id=None):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000)
