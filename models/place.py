@@ -7,6 +7,8 @@ from models.base_model import BaseModel, Base
 from models.review import Review
 from models.amenity import Amenity
 
+# Define tabla only if we are running the program with
+# a database engine
 if getenv("HBNB_TYPE_STORAGE") == "db":
     place_amenity = Table(
         'place_amenity',
@@ -20,6 +22,29 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
             ForeignKey('amenities.id'), nullable=False
         )
     )
+
+
+def get_objects_by_id(CLS, id=None):
+    """
+    Get records of a specific class that match the id passed
+    as argument
+
+    Parameters
+    ----------
+        CLS: Specific class
+        id: Value to indetify objects
+
+    Return
+    ------
+        store: List of records
+    """
+    from models import storage
+    dict_objects = storage.all(CLS)
+    store = list()
+    for value in dict_objects.values():
+        if value.place_id == id:
+            store.append(value)
+    return store
 
 
 class Place(BaseModel, Base):
@@ -62,23 +87,11 @@ class Place(BaseModel, Base):
             """
             Return all reviews instances associated with a place
             """
-            from models import storage
-            dict_objects = storage.all(Review)
-            store = list()
-            for value in dict_objects.values():
-                if value.place_id == self.id:
-                    store.append(value)
-            return store
+            return get_objects_by_id(Review, self.id)
 
         @property
         def amenities(self):
             """
             Return the list of amenity instances associated with a place
             """
-            from models import storage
-            dict_objects = storage.all(Amenity)
-            store = list()
-            for value in dict_objects.values():
-                if value.place_id == self.id:
-                    store.append(value)
-            return store
+            return get_objects_by_id(Amenity, self.id)

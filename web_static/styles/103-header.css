@@ -1,18 +1,18 @@
-header {
-	background-color: white;
+.header {
+	background-color: #FFFFFF;
 	height: 70px;
 	width: 100%;
-	
 	border-bottom: 1px solid #CCCCCC;
+	display: flex;
+	align-items: center;
 }
 
-#header_logo {
-	height: 100%;
-	width: 142px;
-
-	background-image: url("../images/logo.png");
-	background-repeat: no-repeat;
-	background-position: center;
-
+.header_logo {
 	margin-left: 20px;
+}
+
+@media only screen and (max-width: 521px) {
+	.header_logo {
+		margin-left: 1.5%;
+	}
 }

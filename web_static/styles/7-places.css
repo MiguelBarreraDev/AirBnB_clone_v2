@@ -1,11 +1,24 @@
 .places {
-	display: block;
-	margin: 45px auto;
-	text-align: center;
+	display: flex;
+	flex-direction: column;
+}
+/*==========================*/
+/* Style for tile into places section */
+/*==========================*/
+.places > h1 {
+	font-size: 30px;
+	margin-left: 15px;
+}
+/*========================*/
+/* Styles for options places */
+/*========================*/
+.places .places_main {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
 }
 
-article {
-	display: inline-block;
+.places_main .places_item {
 	width: 390px;
 	padding: 20px;
 	margin: 20px;
@@ -14,19 +27,6 @@ article {
 	text-align: center;
 }
 
-h1 {
-	float: left;
-	text-align: left;
-	width: 95%;
-	display: block;
-	margin-top: 0px;
-	margin-left: 20px;
-	margin-bottom: 5px;
+.places_main .places_item > h2 {
 	font-size: 30px;
-}
-
-article h2 {
-	font-size: 30px;
-	padding: 0px;
-	margin: auto;
 }

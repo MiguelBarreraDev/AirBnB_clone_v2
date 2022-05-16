@@ -7,6 +7,29 @@ from models.base_model import BaseModel, Base
 from models.city import City
 
 
+def get_objects_by_id(CLS, id=None):
+    """
+    Get records of a specific class that match the id passed
+    as argument
+
+    Parameters
+    ----------
+        CLS: Specific class
+        id: Value to indetify objects
+
+    Return
+    ------
+        store: List of records
+    """
+    from models import storage
+    dict_objects = storage.all(CLS)
+    store = list()
+    for value in dict_objects.values():
+        if value.state_id == id:
+            store.append(value)
+    return store
+
+
 class State(BaseModel, Base):
     """ State class """
     if getenv('HBNB_TYPE_STORAGE') == "db":
@@ -17,10 +40,4 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """Return a list of cities by state"""
-            from models import storage
-            dict_objects = storage.all(City)
-            store = list()
-            for value in dict_objects.values():
-                if value.state_id == self.id:
-                    store.append(value)
-            return store
+            return get_objects_by_id(City, self.id)
